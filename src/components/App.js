@@ -24,22 +24,25 @@ const App = () => {
       setTimeout(() => {
         if (minutes === 0 && seconds === 0 && duration === "Work-Time") {
           setMinutes(breakDuration);
+          setSeconds(0);
           alert(`work duration is over`);
           setDuration("Break-Time");
         }
         if (minutes === 0 && seconds === 0 && duration === "Break-Time") {
           setMinutes(workDuration);
+          setSeconds(0);
           alert(`break duration is over`);
           setDuration("Work-Time");
         }
-        else if (seconds === 0 && minutes > 0) {
-          setMinutes(minutes - 1);
+        else if (seconds === 0 && minutes !== 0) {
           setSeconds(59);
+          setMinutes(minutes - 1);
+
         }
         else if (seconds > 0) {
           setSeconds(seconds - 1);
         }
-      }, 1 * 1000);
+      }, 0.2 * 1000);
     }
   }, [minutes, seconds, start, duration]);
   //stop timer
