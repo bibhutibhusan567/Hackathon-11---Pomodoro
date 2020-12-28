@@ -12,6 +12,43 @@ const App = () => {
   const [duration, setDuration] = useState("Work-Time");
   const [minutes, setMinutes] = useState(workDuration);
   const [seconds, setSeconds] = useState(0);
+  //stop timer
+  function stopTimer() {
+    setStart(true);
+    setStop(false);
+  }
+  //reset timer
+  function resetTimer() {
+    setStart(true);
+    setStop(false);
+    setReset(false);
+    setWorkDuration(25);
+    setBreakDuration(5);
+    setDuration("Work-Time");
+    setMinutes(25);
+    setSeconds(0);
+    document.getElementById("workTime").setAttribute("vlaue", 25);
+    document.getElementById("breakTime").setAttribute("vlaue", 5);
+  }
+  function getNewWorkTime(event) {
+    const newTime = event.target.value;
+    setNewWorkTime(newTime);
+  }
+  function getNewBreakTime(event) {
+    const newTime = event.target.value;
+    setNewBreakTime(newTime);
+  }
+  //set New Timing
+  function setNewTiming() {
+    if (newWorkTime === "" || newBreakTime === "" || newWorkTime === "0" || newBreakTime === "0") {
+      console.log(newWorkTime);
+    } else {
+      setWorkDuration(newWorkTime);
+      setBreakDuration(newBreakTime);
+      setMinutes(newWorkTime);
+      setSeconds(0);
+    }
+  }
   //start timer
   function startTimer() {
     setStop(true);
@@ -45,41 +82,7 @@ const App = () => {
       }, 1 * 1000);
     }
   }, [minutes, seconds, start, duration]);
-  //stop timer
-  function stopTimer() {
-    setStart(true);
-    setStop(false);
-  }
-  //reset timer
-  function resetTimer() {
-    setStart(true);
-    setStop(false);
-    setReset(false);
-    setWorkDuration(25);
-    setBreakDuration(5);
-    setDuration("Work-Time");
-    setMinutes(25);
-    setSeconds(0);
-  }
-  function getNewWorkTime(event) {
-    const newTime = event.target.value;
-    setNewWorkTime(newTime);
-  }
-  function getNewBreakTime(event) {
-    const newTime = event.target.value;
-    setNewBreakTime(newTime);
-  }
-  //set New Timing
-  function setNewTiming() {
-    if (newWorkTime === "" || newBreakTime === "" || newWorkTime === "0" || newBreakTime === "0") {
-      console.log(newWorkTime);
-    } else {
-      setWorkDuration(newWorkTime);
-      setBreakDuration(newBreakTime);
-      setMinutes(newWorkTime);
-      setSeconds(0);
-    }
-  }
+
   const printFinalString = (val) => {
     if (val < 10) {
       return (`0${val}`);
