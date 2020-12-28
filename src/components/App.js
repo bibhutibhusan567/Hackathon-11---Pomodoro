@@ -10,11 +10,25 @@ const App = () => {
   const [newWorkTime, setNewWorkTime] = useState(25);
   const [newBreakTime, setNewBreakTime] = useState(5);
   const [duration, setDuration] = useState("Work Time");
+  const [minutes, setMinutes] = useState(workDuration);
+  const [seconds, setSeconds] = useState(0);
   //start timer
   function startTimer() {
     setStop(true);
     setStart(false);
     setReset(true);
+    if (minutes > 0 && seconds == 0) {
+      setTimeout(() => {
+        setMinutes(minutes - 1);
+        setSeconds(59);
+      }, 1 * 1000);
+    }
+
+    if (seconds > 0)
+      setInterval(() => {
+        setSeconds(seconds - 1);
+      }, 1 * 1000);
+
   }
   //stop timer
   function stopTimer() {
@@ -29,6 +43,8 @@ const App = () => {
     setWorkDuration(25);
     setBreakDuration(5);
     setDuration("Work Time");
+    setMinutes(25);
+    setSeconds("00");
   }
   function getNewWorkTime(event) {
     const newTime = event.target.value;
@@ -45,12 +61,15 @@ const App = () => {
     } else {
       setWorkDuration(newWorkTime);
       setBreakDuration(newBreakTime);
+      setMinutes(newWorkTime);
+      setSeconds("00");
     }
   }
 
   return (
     <div id="main" >
-      <h1 style={{ color: "black" }}>{workDuration}</h1>
+
+      <h1 style={{ color: "black" }}>{`${minutes}:${seconds}`}</h1>
       <h3 style={{ color: "black", marginLeft: "45%" }}>{duration}</h3>
 
       <div style={{ marginLeft: "44%" }}>
