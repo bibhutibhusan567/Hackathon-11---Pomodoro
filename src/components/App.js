@@ -42,7 +42,7 @@ const App = () => {
         else if (seconds > 0) {
           setSeconds(seconds - 1);
         }
-      }, 0.2 * 1000);
+      }, 1 * 1000);
     }
   }, [minutes, seconds, start, duration]);
   //stop timer
