@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import '../styles/App.css';
 
 const App = () => {
@@ -9,7 +9,7 @@ const App = () => {
   const [breakDuration, setBreakDuration] = useState(5);
   const [newWorkTime, setNewWorkTime] = useState(25);
   const [newBreakTime, setNewBreakTime] = useState(5);
-  const [duration, setDuration] = useState("Work Time");
+  const [duration, setDuration] = useState("Work-Time");
   const [minutes, setMinutes] = useState(workDuration);
   const [seconds, setSeconds] = useState(0);
   //start timer
@@ -17,19 +17,31 @@ const App = () => {
     setStop(true);
     setStart(false);
     setReset(true);
-    if (minutes > 0 && seconds == 0) {
+  }
+  useEffect(() => {
+
+    if (start === false) {
       setTimeout(() => {
-        setMinutes(minutes - 1);
-        setSeconds(59);
+        if (minutes === 0 && seconds === 0 && duration === "Work-Time") {
+          setMinutes(breakDuration);
+          alert(`work duration is over`);
+          setDuration("Break-Time");
+        }
+        if (minutes === 0 && seconds === 0 && duration === "Break-Time") {
+          setMinutes(workDuration);
+          alert(`break duration is over`);
+          setDuration("Work-Time");
+        }
+        else if (seconds === 0 && minutes > 0) {
+          setMinutes(minutes - 1);
+          setSeconds(59);
+        }
+        else if (seconds > 0) {
+          setSeconds(seconds - 1);
+        }
       }, 1 * 1000);
     }
-
-    if (seconds > 0)
-      setInterval(() => {
-        setSeconds(seconds - 1);
-      }, 1 * 1000);
-
-  }
+  }, [minutes, seconds, start, duration]);
   //stop timer
   function stopTimer() {
     setStart(true);
@@ -42,9 +54,9 @@ const App = () => {
     setReset(false);
     setWorkDuration(25);
     setBreakDuration(5);
-    setDuration("Work Time");
+    setDuration("Work-Time");
     setMinutes(25);
-    setSeconds("00");
+    setSeconds(0);
   }
   function getNewWorkTime(event) {
     const newTime = event.target.value;
@@ -56,20 +68,25 @@ const App = () => {
   }
   //set New Timing
   function setNewTiming() {
-    if (newWorkTime === "" || newBreakTime === "") {
+    if (newWorkTime === "" || newBreakTime === "" || newWorkTime === "0" || newBreakTime === "0") {
       console.log(newWorkTime);
     } else {
       setWorkDuration(newWorkTime);
       setBreakDuration(newBreakTime);
       setMinutes(newWorkTime);
-      setSeconds("00");
+      setSeconds(0);
     }
   }
-
+  const printFinalString = (val) => {
+    if (val < 10) {
+      return (`0${val}`);
+    }
+    return val;
+  }
   return (
     <div id="main" >
 
-      <h1 style={{ color: "black" }}>{`${minutes}:${seconds}`}</h1>
+      <h1 style={{ color: "black" }}>{`${printFinalString(minutes)}:${printFinalString(seconds)}`}</h1>
       <h3 style={{ color: "black", marginLeft: "45%" }}>{duration}</h3>
 
       <div style={{ marginLeft: "44%" }}>
@@ -126,7 +143,6 @@ const App = () => {
           data-testid='set-btn'
           onClick={setNewTiming}
         >Set </button>
-
       </div>
     </div >
   )
