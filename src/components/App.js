@@ -58,7 +58,7 @@ const App = () => {
   useEffect(() => {
 
     if (start === false) {
-      setTimeout(() => {
+      const intervalId = setInterval(() => {
         if (minutes === 0 && seconds === 0 && duration === "Work-Time") {
           setMinutes(breakDuration);
           setSeconds(0);
@@ -80,8 +80,11 @@ const App = () => {
           setSeconds(seconds - 1);
         }
       }, 1 * 1000);
+      return () => {
+        clearInterval(intervalId);
+      };
     }
-  }, [minutes, seconds, start, duration]);
+  });
 
   const printFinalString = (val) => {
     if (val < 10) {
