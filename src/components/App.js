@@ -58,31 +58,49 @@ const App = () => {
   useEffect(() => {
 
     if (start === false) {
-      const intervalId = setInterval(() => {
-        if (minutes === 0 && seconds === 0 && duration === "Work-Time") {
-          setMinutes(breakDuration);
-          setSeconds(0);
-          alert(`work duration is over`);
-          setDuration("Break-Time");
-        }
-        if (minutes === 0 && seconds === 0 && duration === "Break-Time") {
-          setMinutes(workDuration);
-          setSeconds(0);
-          alert(`break duration is over`);
-          setDuration("Work-Time");
-        }
-        else if (seconds === 0 && minutes !== 0) {
-          setSeconds(59);
-          setMinutes(minutes - 1);
+      if (breakDuration === "0") {
+        const intervalId = setInterval(() => {
+          if (minutes === 0 && seconds === 0) {
+            setMinutes(workDuration);
+            setSeconds(0);
+            alert(`work duration is over`);
+            alert(`break duration is over`);
+          }
+          else if (seconds === 0 && minutes > 0) {
+            setSeconds(59);
+            setMinutes(minutes - 1);
+          }
+          else if (seconds > 0) {
+            setSeconds(seconds - 1);
+          }
+        }, 1 * 1000);
+        return () => clearInterval(intervalId);
 
-        }
-        else if (seconds > 0) {
-          setSeconds(seconds - 1);
-        }
-      }, 1 * 1000);
-      return () => {
-        clearInterval(intervalId);
-      };
+      } else {
+        const intervalId = setInterval(() => {
+          if (minutes === 0 && seconds === 0 && duration === "Work-Time") {
+            setMinutes(breakDuration);
+            setSeconds(0);
+            alert(`work duration is over`);
+            setDuration("Break-Time");
+          }
+          if (minutes === 0 && seconds === 0 && duration === "Break-Time") {
+            setMinutes(workDuration);
+            setSeconds(0);
+            alert(`break duration is over`);
+            setDuration("Work-Time");
+          }
+          else if (seconds === 0 && minutes > 0) {
+            setSeconds(59);
+            setMinutes(minutes - 1);
+
+          }
+          else if (seconds > 0) {
+            setSeconds(seconds - 1);
+          }
+        }, 1 * 1000);
+        return () => clearInterval(intervalId);
+      }
     }
   });
 
