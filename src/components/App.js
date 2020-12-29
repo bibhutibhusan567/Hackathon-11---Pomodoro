@@ -40,7 +40,7 @@ const App = () => {
   }
   //set New Timing
   function setNewTiming() {
-    if (newWorkTime === "" || newBreakTime === "" || newWorkTime === "0" || newBreakTime === "0") {
+    if (newWorkTime === "" || newWorkTime === "0") {
       console.log(newWorkTime);
     } else {
       setWorkDuration(newWorkTime);
